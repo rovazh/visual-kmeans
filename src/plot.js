@@ -33,33 +33,33 @@ export default function getPlot({ xd, yd }) {
 
   return {
     node: svg.node(),
-    point: ({ x, y }) => {
+    clear: () => {
+      svg.selectAll("circle").remove();
+    },
+    drawPoint: ({ x, y, color }) => {
       svg
         .append("circle")
-        .attr("class", "circle")
         .attr("cx", xa(x))
         .attr("cy", ya(y))
         .attr("r", 5)
-        .attr("fill", "red");
+        .attr("fill", color);
     },
-    centroid: ({ x, y }) => {
-      const { svg, xAxis, yAxis } = getPlot();
+    drawCentroid: ({ x, y, color }) => {
       svg
         .append("circle")
-        .attr("cx", xAxis(x))
-        .attr("cy", yAxis(y))
+        .attr("cx", xa(x))
+        .attr("cy", ya(y))
         .attr("r", 10)
-        .attr("fill", "blue");
+        .attr("fill", color);
     },
-    edge: ({ x1, y1, x2, y2 }) => {
-      const { svg, xAxis, yAxis } = getPlot();
+    edge: ({ x1, y1, x2, y2, color }) => {
       svg
         .append("line")
-        .attr("x1", xAxis(x1))
-        .attr("y1", yAxis(y1))
-        .attr("x2", xAxis(x2))
-        .attr("y2", yAxis(y2))
-        .attr("stroke", "red")
+        .attr("x1", xa(x1))
+        .attr("y1", ya(y1))
+        .attr("x2", xa(x2))
+        .attr("y2", ya(y2))
+        .attr("stroke", color)
         .attr("stroke-width", 1);
     },
   };

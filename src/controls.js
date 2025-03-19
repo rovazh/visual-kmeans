@@ -19,9 +19,9 @@ const parseCsv = (contents) => {
     }
   }
   return result;
-}
+};
 
-export function csvfileInput({onLoad}) {
+export function csvfileInput({ onLoad }) {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "text/csv";
