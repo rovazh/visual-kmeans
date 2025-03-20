@@ -16,7 +16,7 @@ export const initClusters = (k, scale) => {
   return clusters;
 };
 
-export const clusterize = (clusters, data) => {
+export const cluster = (clusters, data) => {
   for (const cluster of clusters) cluster.points = [];
   for (const datum of data) {
     const dataPoint = { x: datum[0], y: datum[1] };

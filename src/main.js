@@ -1,4 +1,4 @@
-import { calcNewCentroids, clusterize, initClusters } from "./calc.js";
+import { calcNewCentroids, cluster, initClusters } from "./calc.js";
 import { button, csvfileInput, numericInput } from "./controls.js";
 import getPlot from "./plot.js";
 
@@ -14,14 +14,14 @@ let data;
 function initialize() {
   clusters = [];
   clusters = initClusters(k, 100);
-  clusters = clusterize(clusters, data);
+  clusters = cluster(clusters, data);
   clear();
   draw(clusters);
 }
 
 function doNextIteration() {
   clusters = calcNewCentroids(clusters);
-  clusters = clusterize(clusters, data);
+  clusters = cluster(clusters, data);
   clear();
   draw(clusters);
 }
