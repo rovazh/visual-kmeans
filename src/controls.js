@@ -1,8 +1,9 @@
 export function button({ text, onClick }) {
-  const button = document.createElement("button");
-  button.innerText = text;
-  button.addEventListener("click", onClick);
-  return button;
+  const $button = document.createElement("button");
+  $button.innerText = text;
+  $button.style.marginLeft = "15px";
+  $button.addEventListener("click", onClick);
+  return $button;
 }
 
 const parseCsv = (contents) => {
@@ -22,10 +23,10 @@ const parseCsv = (contents) => {
 };
 
 export function csvfileInput({ onLoad }) {
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "text/csv";
-  fileInput.addEventListener("change", function (event) {
+  const $input = document.createElement("input");
+  $input.type = "file";
+  $input.accept = "text/csv";
+  $input.addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (!file) {
       console.error("No file selected. Please choose a file.");
@@ -33,8 +34,28 @@ export function csvfileInput({ onLoad }) {
     }
     const reader = new FileReader();
     reader.readAsText(file, "utf-8");
-    reader.addEventListener("load", () => onLoad(parseCsv(reader.result)));
+    reader.addEventListener("load", () => {
+      onLoad(parseCsv(reader.result));
+      event.target.value = "";
+    });
     reader.addEventListener("error", () => console.error(reader.error));
   });
-  return fileInput;
+  return $input;
+}
+
+export function numericInput({ min, max, dv, onInput }) {
+  const $input = document.createElement("input");
+  $input.addEventListener("change", (envent) => {
+    const val = envent.target.value;
+    if (val < min) {
+      $input.value = min;
+      return onInput(min);
+    }
+    onInput(val);
+  });
+  $input.type = "number";
+  $input.min = min;
+  $input.max = max;
+  $input.value = dv;
+  return $input;
 }

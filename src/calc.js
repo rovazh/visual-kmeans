@@ -17,9 +17,10 @@ export const initClusters = (k, scale) => {
 };
 
 export const clusterize = (clusters, data) => {
+  for (const cluster of clusters) cluster.points = [];
   for (const datum of data) {
     const dataPoint = { x: datum[0], y: datum[1] };
-    let clusterindex = 0;
+    let clusterIndex = 0;
     let minDist;
     for (let i = 0; i < clusters.length; i++) {
       const dist = calcEuclidianDistance({
@@ -30,16 +31,17 @@ export const clusterize = (clusters, data) => {
       });
       if (minDist === undefined || minDist > dist) {
         minDist = dist;
-        clusterindex = i;
+        clusterIndex = i;
       }
     }
-    clusters[clusterindex].points.push(dataPoint);
+    clusters[clusterIndex].points.push(dataPoint);
   }
   return clusters;
 };
 
 export const calcNewCentroids = (clusters) => {
   for (const cluster of clusters) {
+    if (!cluster.points.length) continue;
     const sum = cluster.points.reduce(
       (acc, { x, y }) => ({ x: acc.x + x, y: acc.y + y }),
       { x: 0, y: 0 }

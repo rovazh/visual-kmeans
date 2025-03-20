@@ -1,63 +1,59 @@
-import { color } from "d3";
 import { calcNewCentroids, clusterize, initClusters } from "./calc.js";
-import { button, csvfileInput } from "./controls.js";
+import { button, csvfileInput, numericInput } from "./controls.js";
 import getPlot from "./plot.js";
 
-const k = 3;
-
-const colors = ["red", "blue", "green", "yellow"];
-
-let clusters = [];
-
-const { node, drawPoint, drawCentroid, clear } = getPlot({
+const { node, draw, clear } = getPlot({
   xd: [0, 100],
   yd: [0, 100],
 });
 
-const draw = () => {
-  for (let i = 0; i < clusters.length; i++) {
-    drawCentroid({
-      x: clusters[i].centroid.x,
-      y: clusters[i].centroid.y,
-      color: colors[i],
-    });
-    for (const point of clusters[i].points) {
-      drawPoint({ x: point.x, y: point.y, color: colors[i] });
-    }
-  }
-};
-
+let k = 3;
+let clusters;
 let data;
 
-function plot() {
+function initialize() {
+  clusters = [];
   clusters = initClusters(k, 100);
   clusters = clusterize(clusters, data);
-  draw();
-
-  return node;
+  clear();
+  draw(clusters);
 }
 
+function doNextIteration() {
+  clusters = calcNewCentroids(clusters);
+  clusters = clusterize(clusters, data);
+  clear();
+  draw(clusters);
+}
+
+document.body.appendChild(node);
 document.body.appendChild(
   csvfileInput({
     onLoad: (d) => {
+      if (!data) {
+        document.body.appendChild(
+          button({
+            text: "Reset",
+            onClick: initialize,
+          })
+        );
+        document.body.appendChild(
+          button({
+            text: "Next Iteration",
+            onClick: doNextIteration,
+          })
+        );
+      }
       data = d;
-      document.body.appendChild(plot());
+      initialize();
     },
   })
 );
-
-document.body.appendChild(button({ text: "Start", onClick: () => {} }));
 document.body.appendChild(
-  button({
-    text: "Next",
-    onClick: () => {
-      clusters = calcNewCentroids(clusters);
-      for (const cluster of clusters) {
-        cluster.points = [];
-      }
-      clear();
-      clusters = clusterize(clusters, data);
-      draw();
-    },
+  numericInput({
+    min: 1,
+    max: 30,
+    dv: 3,
+    onInput: (v) => (k = v),
   })
 );
