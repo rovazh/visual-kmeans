@@ -51,6 +51,10 @@ export function numericInput({ min, max, dv, onInput }) {
       $input.value = min;
       return onInput(min);
     }
+    if (val > max) {
+      $input.value = max;
+      return onInput(max);
+    }
     onInput(val);
   });
   $input.type = "number";

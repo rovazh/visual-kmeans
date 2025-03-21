@@ -53,36 +53,34 @@ const colors = [
   "#c71585",
 ];
 
-let svg;
-let xa;
-let ya;
+const width = 640;
+const height = 400;
+const marginTop = 20;
+const marginRight = 20;
+const marginBottom = 30;
+const marginLeft = 40;
 
 export default function getPlot({ xd, yd }) {
-  if (!svg || xa || ya) {
-    const width = 640;
-    const height = 400;
-    const marginTop = 20;
-    const marginRight = 20;
-    const marginBottom = 30;
-    const marginLeft = 40;
-    xa = d3
-      .scaleLinear()
-      .domain(xd)
-      .range([marginLeft, width - marginRight]);
-    ya = d3
-      .scaleLinear()
-      .domain(yd)
-      .range([height - marginBottom, marginTop]);
-    svg = d3.create("svg").attr("width", width).attr("height", height);
-    svg
-      .append("g")
-      .attr("transform", `translate(0, ${height - marginBottom})`)
-      .call(d3.axisBottom(xa));
-    svg
-      .append("g")
-      .attr("transform", `translate(${marginLeft}, 0)`)
-      .call(d3.axisLeft(ya));
-  }
+  const xa = d3
+    .scaleLinear()
+    .domain(xd)
+    .range([marginLeft, width - marginRight]);
+
+  const ya = d3
+    .scaleLinear()
+    .domain(yd)
+    .range([height - marginBottom, marginTop]);
+
+  const svg = d3.create("svg").attr("width", width).attr("height", height);
+
+  svg
+    .append("g")
+    .attr("transform", `translate(0, ${height - marginBottom})`)
+    .call(d3.axisBottom(xa));
+  svg
+    .append("g")
+    .attr("transform", `translate(${marginLeft}, 0)`)
+    .call(d3.axisLeft(ya));
 
   const drawPoint = ({ x, y, rad, color }) => {
     svg
