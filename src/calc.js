@@ -1,5 +1,5 @@
 export function calcEuclidianDistance({ x1, y1, x2, y2 }) {
-  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y2, 2));
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y2 - y1, 2));
 }
 
 export const initClusters = (k, scale) => {
