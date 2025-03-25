@@ -12,7 +12,7 @@ The application accepts a dataset in `.csv` format, which contains two columns o
 
 An example dataset is provided in the repository under the `examples/` directory.
 
-To upload your own dataset, use the Upload CSV button in the app interface and select a .csv file from your local machine.
+To upload your own dataset, use the Choose File button in the app interface and select a .csv file from your local machine.
 
 ## How to run
 

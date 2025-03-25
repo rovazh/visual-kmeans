@@ -36,7 +36,6 @@ export function csvfileInput({ onLoad }) {
     reader.readAsText(file, "utf-8");
     reader.addEventListener("load", () => {
       onLoad(parseCsv(reader.result));
-      event.target.value = "";
     });
     reader.addEventListener("error", () => console.error(reader.error));
   });
@@ -44,7 +43,13 @@ export function csvfileInput({ onLoad }) {
 }
 
 export function numericInput({ min, max, dv, onInput }) {
+  const $div = document.createElement("div");
+  $div.style.display = "inline-block";
+  const $label = document.createElement("label");
+  $label.innerText = "k";
+  $label.style.marginLeft = "15px";
   const $input = document.createElement("input");
+  $input.style.marginLeft = "5px";
   $input.addEventListener("change", (envent) => {
     const val = envent.target.value;
     if (val < min) {
@@ -61,5 +66,7 @@ export function numericInput({ min, max, dv, onInput }) {
   $input.min = min;
   $input.max = max;
   $input.value = dv;
-  return $input;
+  $div.appendChild($label);
+  $div.appendChild($input);
+  return $div;
 }
